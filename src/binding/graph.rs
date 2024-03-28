@@ -12,16 +12,8 @@ pub type SchemaID = i32;
 pub type RelationID = i32;
 pub type AttributeID = i32;
 pub type AttributeSet = *mut c_void;
-
-#[repr(C)]
-pub struct Graph {
-    // TODO
-}
-
-#[repr(C)]
-pub struct GraphContext {
-    // TODO
-}
+pub type Graph = c_void;
+pub type GraphContext = c_void;
 
 #[repr(C)]
 #[derive(Copy, Clone, PartialEq)]
@@ -81,6 +73,27 @@ impl Edge {
             self.attributes.write(*set);
         }
     }
+}
+
+#[repr(C)]
+pub enum ConfigOptionField {
+    TIMEOUT = 0,                    // timeout value for queries
+    TIMEOUT_DEFAULT = 1,            // default timeout for read and write queries
+    TIMEOUT_MAX = 2,                // max timeout that can be enforced
+    CACHE_SIZE = 3,                 // number of entries in cache
+    ASYNC_DELETE = 4,               // delete graph asynchronously
+    OPENMP_NTHREAD = 5,             // max number of OpenMP threads to use
+    THREAD_POOL_SIZE = 6,           // number of threads in thread pool
+    RESULTSET_MAX_SIZE = 7,         // max number of records in result-set
+    VKEY_MAX_ENTITY_COUNT = 8,      // max number of elements in vkey
+    MAX_QUEUED_QUERIES = 9,         // max number of queued queries
+    QUERY_MEM_CAPACITY = 10, // max mem(bytes) that query/thread can utilize at any given time
+    DELTA_MAX_PENDING_CHANGES = 11, // number of pending changes before RG_Matrix flushed
+    NODE_CREATION_BUFFER = 12, // size of buffer to maintain as margin in matrices
+    CMD_INFO = 13,           // toggle on/off the GRAPH.INFO
+    CMD_INFO_MAX_QUERY_COUNT = 14, // the max number of info queries count
+    EFFECTS_THRESHOLD = 15,  // bolt protocol port
+    BOLT_PORT = 16,          // replicate queries via effects
 }
 
 extern "C" {
@@ -163,6 +176,10 @@ extern "C" {
         e: *mut Edge,
     );
     pub fn AttributeSet_Free(set: *mut AttributeSet);
+    pub fn Config_Option_get(
+        field: ConfigOptionField,
+        ...
+    ) -> bool;
 }
 
 pub struct GraphAPI {

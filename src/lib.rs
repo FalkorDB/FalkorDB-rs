@@ -7,6 +7,7 @@ use std::alloc::{GlobalAlloc, Layout};
 use std::os::raw::c_void;
 
 mod binding;
+mod graph;
 mod undo_log;
 
 extern "C" {

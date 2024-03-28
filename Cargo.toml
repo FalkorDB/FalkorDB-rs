@@ -10,3 +10,4 @@ crate-type = ["staticlib", "rlib"]
 falkordb_allocator = []
 
 [dependencies]
+libc = "0.2.153"

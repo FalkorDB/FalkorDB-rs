@@ -2,6 +2,7 @@
  * Copyright FalkorDB Ltd. 2023 - present
  * Licensed under the Server Side Public License v1 (SSPLv1).
  */
+
 use std::{ffi::c_char, ptr::null_mut};
 
 use crate::binding::graph::*;
@@ -267,7 +268,7 @@ impl UndoLog {
                             id: -1,
                         };
                         g.create_node(&mut node, labels.as_mut_ptr(), labels.len() as u32);
-                        assert!(*node_id >= node.id);
+                        debug_assert!(*node_id >= node.id);
                         node.attributes.write(*set);
                         gc.add_node_to_indices(&mut node);
                     }
@@ -283,7 +284,7 @@ impl UndoLog {
                             dest_id: *dest_id,
                         };
                         g.create_edge(edge.src_id, edge.dest_id, edge.relation_id, &mut edge);
-                        assert!(*edge_id >= edge.id);
+                        debug_assert!(*edge_id >= edge.id);
                         edge.attributes.write(*set);
                         gc.add_edge_to_indices(&mut edge);
                     }
